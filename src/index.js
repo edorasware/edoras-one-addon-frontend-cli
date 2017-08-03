@@ -1,9 +1,8 @@
 'use strict';
 
+import configuration from './configuration';
 import inquirer from 'inquirer';
 import { exec } from 'shelljs';
-
-console.log('Hello world: edoras-one-addon-frontend-cli');
 
 const question = {
   type: 'input',
@@ -15,8 +14,7 @@ const question = {
 inquirer.prompt([question]).then(function(answers) {
   initialize(answers.name);
 
-  const result = exec(`git clone https://github.com/edorasware/edoras-one-addon-frontend-template.git`);
-  console.log(result);
+  exec(`git clone ${configuration.TEMPLATE_REPO_URL} widget`);
 });
 
 function initialize(aName) {

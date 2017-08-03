@@ -1,0 +1,10 @@
+{
+  "name": "edoras-one-addon-frontend-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+  },
+  "author": "edorasware AG",
+  "license": "Apache-2.0"
+}

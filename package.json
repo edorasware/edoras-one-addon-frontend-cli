@@ -14,6 +14,6 @@
     "url": "https://github.com/edorasware/edoras-one-addon-frontend-cli.git"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1"
+    "babel-cli": "6.24.1"
   }
 }

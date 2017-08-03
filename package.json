@@ -4,11 +4,16 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "dist": "babel src --out-dir dist",
+    "postinstall": "npm run dist"
   },
   "author": "edorasware AG",
   "license": "Apache-2.0",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/edorasware/edoras-one-addon-frontend-cli.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edorasware/edoras-one-addon-frontend-cli.git"
   },
+  "devDependencies": {
+    "babel-cli": "^6.24.1"
+  }
 }

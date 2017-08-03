@@ -18,7 +18,7 @@ inquirer.prompt([question]).then(function(answers) {
   initialize(answers.name);
 
   exec(`git clone ${configuration.TEMPLATE_REPO_URL} ${widgetPath}`);
-  rm('-rf', path.join(__dirname, '..', widgetPath, '.git'));
+  rm('-rf', path.join(__dirname, '..', '..', '..', widgetPath, '.git'));
 });
 
 function initialize(aName) {

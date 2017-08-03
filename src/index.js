@@ -2,7 +2,8 @@
 
 import configuration from './configuration';
 import inquirer from 'inquirer';
-import { exec } from 'shelljs';
+import path from 'path';
+import { exec, rm } from 'shelljs';
 
 const question = {
   type: 'input',
@@ -11,10 +12,13 @@ const question = {
   default: 'star-rating'
 };
 
+const widgetPath = 'widget';
+
 inquirer.prompt([question]).then(function(answers) {
   initialize(answers.name);
 
-  exec(`git clone ${configuration.TEMPLATE_REPO_URL} widget`);
+  exec(`git clone ${configuration.TEMPLATE_REPO_URL} ${widgetPath}`);
+  rm('-rf', path.join(__dirname, '..', widgetPath, '.git'));
 });
 
 function initialize(aName) {

@@ -3,8 +3,9 @@
 import configuration from './configuration';
 import inquirer from 'inquirer';
 import { noop } from 'lodash';
+import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
-import { exec, rm } from 'shelljs';
+import { cd, exec, rm } from 'shelljs';
 
 const question = {
   type: 'input',
@@ -15,15 +16,32 @@ const question = {
 
 const widgetPath = 'widget';
 
+let widgetName;
+
+showStartScreen();
+
 inquirer.prompt([question]).then((answers) => {
   initialize(answers.name);
-  console.log(`Creating widget...`);
+  showMessage(`Creating widget...`);
   return asPromise({code: 0}, noop);
 }).then(() => {
-  console.log(`Cloning template repository...`);
+  showMessage(`Cloning template repository...`);
   return cloneRepo(configuration.TEMPLATE_REPO_URL, widgetPath);
 }).then(() => {
   rm('-rf', path.join(__dirname, '..', '..', '..', widgetPath, '.git'));
+}).then(() => {
+  showMessage(`Create dist files...`);
+  return createDist();
+}).then(() => {
+  showMessage([
+    ``,
+    `New project with name '${widgetName}' has been created with a widget boilerplate.`,
+    `Please have a look at the README file for instructions.`,
+    ``
+  ]);
+})
+.catch((error) => {
+  showErrorMessageAndQuit(error);
 });
 
 function asPromise(result, resolve, reject) {
@@ -38,6 +56,18 @@ function cloneRepo(repoUrl, repoPath) {
   });
 }
 
+function createDist() {
+  return new Promise((resolve, reject) => {
+    cd(path.join(__dirname, '..', '..', '..', widgetPath));
+    exec(`npm install`,
+      {silent: configuration.IS_EXECUTION_SILENT});
+    const result = exec(`npm run build`,
+      {silent: configuration.IS_EXECUTION_SILENT});
+    return asPromise(result, resolve, reject);
+  });
+}
+
 function initialize(aName) {
-  console.log(`Your name is ${aName}`);
+  showMessage(`Your name is ${aName}`);
+  widgetName = aName;
 }

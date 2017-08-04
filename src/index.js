@@ -32,7 +32,8 @@ function asPromise(result, resolve, reject) {
 
 function cloneRepo(repoUrl, repoPath) {
   return new Promise((resolve, reject) => {
-    const result = exec(`git clone ${repoUrl} ${repoPath}`, {silent: configuration.IS_EXECUTION_SILENT});
+    const result = exec(`git clone ${repoUrl} ${repoPath}`,
+      {silent: configuration.IS_EXECUTION_SILENT});
     return asPromise(result, resolve, reject);
   });
 }

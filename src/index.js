@@ -28,8 +28,6 @@ inquirer.prompt([question]).then((answers) => {
   showMessage(`Cloning template repository...`);
   return cloneRepo(configuration.TEMPLATE_REPO_URL, widgetPath);
 }).then(() => {
-  rm('-rf', path.join(__dirname, '..', '..', '..', widgetPath, '.git'));
-}).then(() => {
   showMessage(`Create dist files...`);
   return createDist();
 }).then(() => {
@@ -50,8 +48,12 @@ function asPromise(result, resolve, reject) {
 
 function cloneRepo(repoUrl, repoPath) {
   return new Promise((resolve, reject) => {
-    const result = exec(`git clone ${repoUrl} ${repoPath}`,
+    let result = exec(`git clone ${repoUrl} ${repoPath}`,
       {silent: configuration.IS_EXECUTION_SILENT});
+
+    // remove meta data in .git folder
+    result = rm('-rf', path.join(__dirname, '..', repoPath, '.git'));
+
     return asPromise(result, resolve, reject);
   });
 }

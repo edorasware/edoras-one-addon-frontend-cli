@@ -52,7 +52,7 @@ function cloneRepo(repoUrl, repoPath) {
       {silent: configuration.IS_EXECUTION_SILENT});
 
     // remove meta data in .git folder
-    result = rm('-rf', path.join(__dirname, '..', repoPath, '.git'));
+    result = rm('-rf', path.join(__dirname, '..', '..', '..', repoPath, '.git'));
 
     return asPromise(result, resolve, reject);
   });

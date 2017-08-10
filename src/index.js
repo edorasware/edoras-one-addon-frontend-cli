@@ -1,6 +1,6 @@
 'use strict';
 
-import { camelCase, paramCase, titleCase } from 'change-case';
+import { camelCase, paramCase, pascalCase, titleCase } from 'change-case';
 import configuration from './configuration';
 import inquirer from 'inquirer';
 import { noop } from 'lodash';
@@ -66,7 +66,8 @@ function cloneRepo(repoUrl, repoPath) {
       {silent: configuration.IS_EXECUTION_SILENT});
 
     // remove meta data in .git folder
-    result = rm('-rf', path.join(__dirname, '..', '..', '..', repoPath, '.git'));
+    result = rm('-rf',
+      path.join(__dirname, '..', '..', '..', repoPath, '.git'));
 
     return asPromise(result, resolve, reject);
   });
@@ -95,13 +96,16 @@ function executeInPath(command, path) {
 function initialize(aName) {
   showMessage(`Your name is ${aName}`);
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
-  widgetNameFull = `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
+  widgetNameFull =
+    `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
 }
 
 function moveFiles() {
   return new Promise((resolve, reject) => {
-    const source = path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
-    const dest = path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
+    const source =
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
+    const dest =
+      path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
 
     const result = exec(`mv ${source} ${dest}`);
@@ -119,10 +123,24 @@ function renameFile(path, source, target) {
 }
 
 function renameFiles() {
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'), 'widget.form.palette.xml', widgetNameFull + '.form.palette.xml');
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n'), 'widget.translation.properties', widgetNameFull + '.translation.properties');
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'), 'widget.icon.png', widgetNameFull + '.icon.png');
-  return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'), 'widget.module.js', widgetNameFull + '.module.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'),
+    'widget.form.palette.xml', widgetNameFull + '.form.palette.xml');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n'),
+    'widget.translation.properties', widgetNameFull + '.translation.properties');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'),
+    'widget.icon.png', widgetNameFull + '.icon.png');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.component.js', widgetNameFull + '.component.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.controller.js', widgetNameFull + '.controller.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.module.js', widgetNameFull + '.module.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.service.js', widgetNameFull + '.service.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.tpl.html', widgetNameFull + '.tpl.html');
+  return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters'),
+    'widget.edorasone.adapter.js', widgetNameFull + '.edorasone.adapter.js');
 }
 
 function replaceInPath(path, searchRegex, replacement) {
@@ -140,9 +158,22 @@ function replaceInPath(path, searchRegex, replacement) {
 }
 
 function replaceNames() {
-  const filePatterns = ['**/*.js', '**/*.json', '**/*.md', '**/*.properties', '**/*.scss', '**/*.xml'];
+  const filePatterns = [
+    '**/*.html',
+    '**/*.js',
+    '**/*.json',
+    '**/*.md',
+    '**/*.properties',
+    '**/*.scss',
+    '**/*.xml'
+  ];
 
-  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameCamelCase', camelCase(widgetNameFull), filePatterns);
-  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameParamCase', widgetNameFull, filePatterns);
-  return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameTitleCase', titleCase(widgetName), filePatterns);
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
+    'widgetNameCamelCase', camelCase(widgetNameFull), filePatterns);
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
+    'widgetNameParamCase', widgetNameFull, filePatterns);
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
+    'widgetNamePascalCase', pascalCase(widgetNameFull), filePatterns);
+  return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
+    'widgetNameTitleCase', titleCase(widgetName), filePatterns);
 }

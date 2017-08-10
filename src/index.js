@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
 import replace from 'replace';
-import { cd, exec, rm } from 'shelljs';
+import { cd, exec, mkdir, rm } from 'shelljs';
 
 const question = {
   type: 'input',
@@ -39,12 +39,15 @@ inquirer.prompt([question]).then((answers) => {
   showMessage(`Replacing names in cloned template...`);
   return replaceNames();
 }).then(() => {
-  showMessage(`Create dist files...`);
+  showMessage(`Moving files...`);
+  return moveFiles();
+}).then(() => {
+  showMessage(`Creating dist files...`);
   return createDist();
 }).then(() => {
   showMessage([
     ``,
-    `New project with name '${widgetName}' has been created with a widget boilerplate.`,
+    `New project with name '${titleCase(widgetName)}' has been created with a widget boilerplate.`,
     `Please have a look at the README file for instructions.`,
     ``
   ]);
@@ -95,6 +98,18 @@ function initialize(aName) {
   widgetNameFull = `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
 }
 
+function moveFiles() {
+  return new Promise((resolve, reject) => {
+    const source = path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
+    const dest = path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
+    mkdir('-p', dest);
+
+    const result = exec(`mv ${source} ${dest}`);
+
+    return asPromise(result, resolve, reject);
+  });
+}
+
 function renameFile(path, source, target) {
   return new Promise((resolve) => {
     const command = `mv ${source} ${target}`;
@@ -104,6 +119,9 @@ function renameFile(path, source, target) {
 }
 
 function renameFiles() {
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'), 'widget.form.palette.xml', widgetNameFull + '.form.palette.xml');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n'), 'widget.translation.properties', widgetNameFull + '.translation.properties');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'), 'widget.icon.png', widgetNameFull + '.icon.png');
   return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'), 'widget.module.js', widgetNameFull + '.module.js');
 }
 
@@ -122,7 +140,9 @@ function replaceInPath(path, searchRegex, replacement) {
 }
 
 function replaceNames() {
-  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameCamelCase', camelCase(widgetNameFull), ['**/*.js']);
-  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameParamCase', widgetNameFull, ['**/*.js'], ['**/*.scss'], ['package.json']);
-  return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameTitleCase', titleCase(widgetName), ['README.md']);
+  const filePatterns = ['**/*.js', '**/*.json', '**/*.md', '**/*.properties', '**/*.scss', '**/*.xml'];
+
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameCamelCase', camelCase(widgetNameFull), filePatterns);
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameParamCase', widgetNameFull, filePatterns);
+  return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH), 'widgetNameTitleCase', titleCase(widgetName), filePatterns);
 }

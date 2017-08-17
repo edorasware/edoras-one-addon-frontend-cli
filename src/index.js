@@ -13,7 +13,7 @@ const question = {
   type: 'input',
   name: 'name',
   message: `What's the name of your widget?`,
-  default: 'star-rating'
+  default: predictWidgetName()
 };
 
 const WIDGET_PATH = 'widget';
@@ -94,7 +94,7 @@ function executeInPath(command, path) {
 }
 
 function initialize(aName) {
-  showMessage(`Your name is ${aName}`);
+  showMessage(`Your widget name is ${aName}`);
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
   widgetNameFull =
     `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
@@ -112,6 +112,27 @@ function moveFiles() {
 
     return asPromise(result, resolve, reject);
   });
+}
+
+function predictWidgetName() {
+  try {
+    let rootName;
+    let currentPathParts = path.dirname(__dirname).split(path.sep);
+
+    for (var i = 0; i < 3; i++ ) {
+      rootName = currentPathParts.pop();
+    }
+
+    const regExp = new RegExp('edoras-addon-' + '(.*)' + '-frontend');
+    const widgetName = rootName.match(regExp)[1];
+    if (widgetName) {
+      return widgetName;
+    } else {
+      throw 'Invalid name';
+    }
+  } catch(err) {
+    return 'star-rating';
+  }
 }
 
 function renameFile(path, source, target) {

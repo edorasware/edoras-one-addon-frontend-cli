@@ -108,7 +108,10 @@ function moveFiles() {
       path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
 
-    const result = exec(`mv ${source} ${dest}`);
+    // copy to destination and remove sources (mv has an issue if files already
+    // exist)
+    const result = exec(`rsync -a ${source} ${dest}`);
+    rm('-rf', source);
 
     return asPromise(result, resolve, reject);
   });

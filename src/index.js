@@ -9,16 +9,17 @@ import path from 'path';
 import replace from 'replace';
 import { cd, exec, mkdir, rm } from 'shelljs';
 
+
+const EDORAS_ONE_WIDGET_NAME = 'addon';
+const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
+const WIDGET_PATH = 'widget';
+
 const question = {
   type: 'input',
   name: 'name',
   message: `What's the name of your widget?`,
   default: predictWidgetName()
 };
-
-const WIDGET_PATH = 'widget';
-const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
-const EDORAS_ONE_WIDGET_NAME = 'addon';
 
 let widgetName;
 let widgetNameFull;
@@ -42,12 +43,12 @@ inquirer.prompt([question]).then((answers) => {
   showMessage(`Moving files...`);
   return moveFiles();
 }).then(() => {
-  showMessage(`Creating dist files...`);
-  return createDist();
+  showMessage(`Creating build files...`);
+  return createBuild();
 }).then(() => {
   showMessage([
     ``,
-    `New project with name '${titleCase(widgetName)}' has been created with a widget boilerplate.`,
+    `New project with name '${titleCase(widgetName)}' has been created from frontend template.`,
     `Please have a look at the README file for instructions.`,
     ``
   ]);
@@ -56,10 +57,18 @@ inquirer.prompt([question]).then((answers) => {
   showErrorMessageAndQuit(error);
 });
 
+/**
+ * Resolve or reject based on result code
+ * asPromise :: (object, function, function) -> Promise
+ */
 function asPromise(result, resolve, reject) {
   return result.code === 0 ? resolve() : reject(result.stderr);
 }
 
+/**
+ * Clone a git repo to a specified path
+ * cloneRepo :: (string, string) -> Promise
+ */
 function cloneRepo(repoUrl, repoPath) {
   return new Promise((resolve, reject) => {
     let result = exec(`git clone ${repoUrl} ${repoPath}`,
@@ -73,7 +82,11 @@ function cloneRepo(repoUrl, repoPath) {
   });
 }
 
-function createDist() {
+/**
+ * Create build files with webpack
+ * createBuild :: undefined -> Promise
+ */
+function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     exec(`npm install`,
@@ -84,6 +97,10 @@ function createDist() {
   });
 }
 
+/**
+ * Execute a command in a specific path
+ * executeInPath :: (string, path) -> Promise
+ */
 function executeInPath(command, path) {
   return new Promise((resolve, reject) => {
     cd(path);
@@ -93,6 +110,10 @@ function executeInPath(command, path) {
   });
 }
 
+/**
+ * Initialize cli by setting name variables
+ * initialize :: string -> undefined
+ */
 function initialize(aName) {
   showMessage(`Your widget name is ${aName}`);
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
@@ -100,6 +121,10 @@ function initialize(aName) {
     `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
 }
 
+/**
+ * Move palette files to addon folder
+ * moveFiles :: undefined -> Promise
+ */
 function moveFiles() {
   return new Promise((resolve, reject) => {
     const source =
@@ -117,15 +142,21 @@ function moveFiles() {
   });
 }
 
+/**
+ * Predict the widget name from the parent directory
+ * predictWidgetName :: undefined -> string
+ */
 function predictWidgetName() {
   try {
     let rootName;
     let currentPathParts = path.dirname(__dirname).split(path.sep);
 
-    for (var i = 0; i < 3; i++ ) {
+    // go three levels up in path
+    for (let i = 0; i < 3; i++) {
       rootName = currentPathParts.pop();
     }
 
+    // extract widget name
     const regExp = new RegExp('edoras-addon-' + '(.*)' + '-frontend');
     const widgetName = rootName.match(regExp)[1];
     if (widgetName) {
@@ -134,10 +165,15 @@ function predictWidgetName() {
       throw 'Invalid name';
     }
   } catch(err) {
+    // return default value
     return 'star-rating';
   }
 }
 
+/**
+ * Rename file in path
+ * renameFile :: (path, string, target) -> string
+ */
 function renameFile(path, source, target) {
   return new Promise((resolve) => {
     const command = `mv ${source} ${target}`;
@@ -146,6 +182,10 @@ function renameFile(path, source, target) {
   });
 }
 
+/**
+ * Rename multiple files
+ * renameFile :: undefined -> Promise
+ */
 function renameFiles() {
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'),
     'widget.form.palette.xml', widgetNameFull + '.form.palette.xml');
@@ -167,6 +207,10 @@ function renameFiles() {
     'widget.edorasone.adapter.js', widgetNameFull + '.edorasone.adapter.js');
 }
 
+/**
+ * Replace string with pattern in file
+ * replaceInPath :: (path, string, string) -> Promise
+ */
 function replaceInPath(path, searchRegex, replacement) {
   return new Promise((resolve) => {
     replace({
@@ -181,6 +225,10 @@ function replaceInPath(path, searchRegex, replacement) {
   });
 }
 
+/**
+ * Replace template strings with widget name in multiple files
+ * replaceNames :: undefined -> Promise
+ */
 function replaceNames() {
   const filePatterns = [
     '**/*.html',

@@ -11,7 +11,7 @@ export function showStartScreen() {
   console.log(` |  __/ (_| | (_) | | | (_| \\__ \\ | (_) | | | |  __/      `);
   console.log(`  \\___|\\__,_|\\___/|_|  \\__,_|___/  \\___/|_| |_|\\___|  `);
   console.log();
-  console.log(`   ===== edoras one CLI =====`);
+  console.log(`   ===== edoras one Front-end CLI =====`);
   console.log();
   console.log();
 }

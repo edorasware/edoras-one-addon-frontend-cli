@@ -91,7 +91,7 @@ function createBuild() {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     exec(`npm install`,
       {silent: configuration.IS_EXECUTION_SILENT});
-    const result = exec(`npm run build`,
+    const result = exec(`npm run dist`,
       {silent: configuration.IS_EXECUTION_SILENT});
     return asPromise(result, resolve, reject);
   });

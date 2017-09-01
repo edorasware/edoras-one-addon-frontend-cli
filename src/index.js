@@ -14,6 +14,8 @@ const EDORAS_ONE_WIDGET_NAME = 'addon';
 const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
 const WIDGET_PATH = 'widget';
 
+console.log('Log level: ', process.env.npm_config_LOGLEVEL);
+
 const question = {
   type: 'input',
   name: 'name',

@@ -196,6 +196,8 @@ function renameFiles() {
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
     'widget.component.js', widgetNameFull + '.component.js');
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
+    'widget.configuration.js', widgetNameFull + '.configuration.js');
+  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
     'widget.controller.js', widgetNameFull + '.controller.js');
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
     'widget.module.js', widgetNameFull + '.module.js');

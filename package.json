@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dist": "mkdir dist && node ../.bin/babel src --out-dir dist",
+    "dist": "mkdir dist && node ../babel-cli/bin/babel.js src --out-dir dist",
     "postinstall": "npm run dist",
     "start": "node dist"
   },

@@ -12,9 +12,9 @@ import { cd, exec, mkdir, rm } from 'shelljs';
 
 const EDORAS_ONE_WIDGET_NAME = 'addon';
 const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
+const IS_EXECUTION_SILENT = isExecutionSilent();
 const WIDGET_PATH = 'widget';
 
-console.log('Log level: ', process.env.npm_config_LOGLEVEL);
 
 const question = {
   type: 'input',
@@ -74,7 +74,7 @@ function asPromise(result, resolve, reject) {
 function cloneRepo(repoUrl, repoPath) {
   return new Promise((resolve, reject) => {
     let result = exec(`git clone ${repoUrl} ${repoPath}`,
-      {silent: configuration.IS_EXECUTION_SILENT});
+      {silent: IS_EXECUTION_SILENT});
 
     // remove meta data in .git folder
     result = rm('-rf',
@@ -92,9 +92,9 @@ function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     exec(`npm install`,
-      {silent: configuration.IS_EXECUTION_SILENT});
+      {silent: IS_EXECUTION_SILENT});
     const result = exec(`npm run dist`,
-      {silent: configuration.IS_EXECUTION_SILENT});
+      {silent: IS_EXECUTION_SILENT});
     return asPromise(result, resolve, reject);
   });
 }
@@ -106,7 +106,7 @@ function createBuild() {
 function executeInPath(command, path) {
   return new Promise((resolve, reject) => {
     cd(path);
-    const result = exec(command, {silent: configuration.IS_EXECUTION_SILENT});
+    const result = exec(command, {silent: IS_EXECUTION_SILENT});
 
     return asPromise(result, resolve, reject);
   });
@@ -121,6 +121,18 @@ function initialize(aName) {
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
   widgetNameFull =
     `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
+}
+
+/**
+ * Convert the log level to a boolean if execution should be silent
+ * isExecutionSilent :: undefined -> boolean
+ */
+function isExecutionSilent() {
+  if (process.env.npm_config_LOGLEVEL === 'verbose') {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 /**

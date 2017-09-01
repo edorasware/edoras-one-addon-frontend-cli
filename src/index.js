@@ -234,7 +234,7 @@ function replaceInPath(path, searchRegex, replacement) {
       replacement: replacement,
       paths: [path],
       recursive: true,
-      silent: true
+      silent: IS_EXECUTION_SILENT
     });
 
     resolve();

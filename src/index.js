@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
 import replace from 'replace';
-import { cd, exec, mkdir, rm } from 'shelljs';
+import { cd, exec, mkdir, mv, rm } from 'shelljs';
 
 
 const EDORAS_ONE_WIDGET_NAME = 'addon';
@@ -147,11 +147,7 @@ function moveFiles() {
       path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
 
-    // copy to destination and remove sources (mv has an issue if files already
-    // exist)
-    const result = exec(`rsync -a ${source} ${dest}`);
-    rm('-rf', source);
-
+    const result = mv('-f', source, dest);
     return asPromise(result, resolve, reject);
   });
 }

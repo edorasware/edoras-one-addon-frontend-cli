@@ -33,6 +33,8 @@ inquirer.prompt([question]).then((answers) => {
   showMessage(`Creating widget...`);
   return asPromise({code: 0}, noop);
 }).then(() => {
+  return cleanup();
+}).then(() => {
   showMessage(`Cloning template repository...`);
   return cloneRepo(configuration.TEMPLATE_REPO_URL, WIDGET_PATH);
 }).then(() => {
@@ -65,6 +67,22 @@ inquirer.prompt([question]).then((answers) => {
  */
 function asPromise(result, resolve, reject) {
   return result.code === 0 ? resolve() : reject(result.stderr);
+}
+
+/**
+ * Remove node_modules, widget and palette files
+ * cleanup :: undefined -> Promise
+ */
+function cleanup() {
+  return new Promise((resolve, reject) => {
+    rm('-rf',
+      path.join(__dirname, '..', '..', '..', 'node_modules'));
+    rm('-rf',
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH));
+    const result = rm('-rf',
+      path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets'));
+    return asPromise(result, resolve, reject);
+  });
 }
 
 /**

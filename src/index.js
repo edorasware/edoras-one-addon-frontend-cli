@@ -273,7 +273,7 @@ function replaceNames() {
   replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
     'widgetNameFullParamCase', widgetNameFull, filePatterns);
   replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
-    'widgetNamePascalCase', pascalCase(widgetNameFull), filePatterns);
+    'widgetNameFullPascalCase', pascalCase(widgetNameFull), filePatterns);
   return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
     'widgetNameTitleCase', titleCase(widgetName), filePatterns);
 }

@@ -70,13 +70,11 @@ function asPromise(result, resolve, reject) {
 }
 
 /**
- * Remove node_modules, widget and palette files
+ * Remove widget and palette files
  * cleanup :: undefined -> Promise
  */
 function cleanup() {
   return new Promise((resolve, reject) => {
-    rm('-rf',
-      path.join(__dirname, '..', '..', '..', 'node_modules'));
     rm('-rf',
       path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     const result = rm('-rf',

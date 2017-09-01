@@ -206,7 +206,7 @@ function renameFiles() {
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
     'widget.tpl.html', widgetNameFull + '.tpl.html');
   return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters'),
-    'widget.edorasone.adapter.js', widgetNameFull + '.edorasone.adapter.js');
+    'widget.adapter.js', widgetNameFull + '.adapter.js');
 }
 
 /**

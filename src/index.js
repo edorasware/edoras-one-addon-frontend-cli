@@ -183,7 +183,7 @@ function predictWidgetName() {
     }
 
     // extract widget name
-    const regExp = new RegExp('edoras-addon-' + '(.*)' + '-frontend');
+    const regExp = new RegExp('edoras-addon-(.*)-frontend');
     const widgetName = rootName.match(regExp)[1];
     if (widgetName) {
       return widgetName;
@@ -214,25 +214,25 @@ function renameFile(path, source, target) {
  */
 function renameFiles() {
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'),
-    'widget.form.palette.xml', widgetNameFull + '.form.palette.xml');
+    'widget.form.palette.xml', `${widgetNameFull}.form.palette.xml`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n'),
-    'widget.translation.properties', widgetNameFull + '.translation.properties');
+    'widget.translation.properties', `${widgetNameFull}.translation.properties`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'),
-    'widget.icon.png', widgetNameFull + '.icon.png');
+    'widget.icon.png', `${widgetNameFull}.icon.png`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.component.js', widgetNameFull + '.component.js');
+    'widget.component.js', `${widgetNameFull}.component.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.configuration.js', widgetNameFull + '.configuration.js');
+    'widget.configuration.js', `${widgetNameFull}.configuration.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.controller.js', widgetNameFull + '.controller.js');
+    'widget.controller.js', `${widgetNameFull}.controller.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.module.js', widgetNameFull + '.module.js');
+    'widget.module.js', `${widgetNameFull}.module.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.service.js', widgetNameFull + '.service.js');
+    'widget.service.js', `${widgetNameFull}.service.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.tpl.html', widgetNameFull + '.tpl.html');
+    'widget.tpl.html', `${widgetNameFull}.tpl.html`);
   return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters'),
-    'widget.adapter.js', widgetNameFull + '.adapter.js');
+    'widget.adapter.js', `${widgetNameFull}.adapter.js`);
 }
 
 /**

@@ -107,9 +107,9 @@ function cloneRepo(repoUrl, repoPath) {
 function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
-    exec(`npm install`,
+    exec(`yarn install`,
       {silent: IS_EXECUTION_SILENT});
-    const result = exec(`npm run dist`,
+    const result = exec(`yarn run dist`,
       {silent: IS_EXECUTION_SILENT});
     return asPromise(result, resolve, reject);
   });

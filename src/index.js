@@ -3,7 +3,6 @@
 import { camelCase, paramCase, pascalCase, titleCase } from 'change-case';
 import configuration from './configuration';
 import inquirer from 'inquirer';
-import { noop } from 'lodash';
 import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
 import replace from 'replace';
@@ -40,7 +39,7 @@ showStartScreen();
 inquirer.prompt([questionAddonName]).then((answers) => {
   initialize(answers.name);
   showMessage(`Creating widget...`);
-  return asPromise({code: 0}, noop);
+  return asPromise({code: 0}, () => {});
 }).then(() => {
   return setLogLevel();
 }).then(() => {
@@ -287,6 +286,6 @@ function setLogLevel() {
   return inquirer.prompt([questionLogLevel]).then((answers) => {
     showMessage(`Set log level to ${answers.logLevel}.`);
     isExecutionSilent = answers.logLevel === 'info' ? true : false;
-    return asPromise({code: 0}, noop);
+    return asPromise({code: 0}, () => {});
   });
 }

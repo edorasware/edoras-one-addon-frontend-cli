@@ -12,26 +12,37 @@ import { cd, exec, mkdir, mv, rm } from 'shelljs';
 
 const EDORAS_ONE_WIDGET_NAME = 'addon';
 const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
-const IS_EXECUTION_SILENT = isExecutionSilent();
 const WIDGET_PATH = 'widget';
 
-
-const question = {
+const questionAddonName = {
   type: 'input',
   name: 'name',
   message: `What's the name of your widget?`,
   default: predictWidgetName()
 };
 
+const questionLogLevel = {
+  type: 'list',
+  name: 'logLevel',
+  message: `Which log level do you prefer?`,
+  choices: [
+    'info',
+    'verbose'
+  ]
+};
+
+let isExecutionSilent;
 let widgetName;
 let widgetNameFull;
 
 showStartScreen();
 
-inquirer.prompt([question]).then((answers) => {
+inquirer.prompt([questionAddonName]).then((answers) => {
   initialize(answers.name);
   showMessage(`Creating widget...`);
   return asPromise({code: 0}, noop);
+}).then(() => {
+  return setLogLevel();
 }).then(() => {
   return cleanup();
 }).then(() => {
@@ -90,7 +101,7 @@ function cleanup() {
 function cloneRepo(repoUrl, repoPath) {
   return new Promise((resolve, reject) => {
     let result = exec(`git clone ${repoUrl} ${repoPath}`,
-      {silent: IS_EXECUTION_SILENT});
+      {silent: isExecutionSilent});
 
     // remove meta data in .git folder
     result = rm('-rf',
@@ -108,9 +119,9 @@ function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     exec(`yarn install`,
-      {silent: IS_EXECUTION_SILENT});
+      {silent: isExecutionSilent});
     const result = exec(`yarn run dist`,
-      {silent: IS_EXECUTION_SILENT});
+      {silent: isExecutionSilent});
     return asPromise(result, resolve, reject);
   });
 }
@@ -122,7 +133,7 @@ function createBuild() {
 function executeInPath(command, path) {
   return new Promise((resolve, reject) => {
     cd(path);
-    const result = exec(command, {silent: IS_EXECUTION_SILENT});
+    const result = exec(command, {silent: isExecutionSilent});
 
     return asPromise(result, resolve, reject);
   });
@@ -137,18 +148,6 @@ function initialize(aName) {
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
   widgetNameFull =
     `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;
-}
-
-/**
- * Convert the log level to a boolean if execution should be silent
- * isExecutionSilent :: undefined -> boolean
- */
-function isExecutionSilent() {
-  if (process.env.npm_config_LOGLEVEL === 'verbose') {
-    return false;
-  } else {
-    return true;
-  }
 }
 
 /**
@@ -190,7 +189,7 @@ function predictWidgetName() {
     } else {
       throw 'Invalid name';
     }
-  } catch(err) {
+  } catch (err) {
     // return default value
     return 'star-rating';
   }
@@ -246,7 +245,7 @@ function replaceInPath(path, searchRegex, replacement) {
       replacement: replacement,
       paths: [path],
       recursive: true,
-      silent: IS_EXECUTION_SILENT
+      silent: isExecutionSilent
     });
 
     resolve();
@@ -278,4 +277,16 @@ function replaceNames() {
     'widgetNameParamCase', paramCase(widgetName), filePatterns);
   return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
     'widgetNameTitleCase', titleCase(widgetName), filePatterns);
+}
+
+/**
+ * Ask for log level and store it
+ * setLogLevel :: undefined -> Promise
+ */
+function setLogLevel() {
+  return inquirer.prompt([questionLogLevel]).then((answers) => {
+    showMessage(`Set log level to ${answers.logLevel}.`);
+    isExecutionSilent = answers.logLevel === 'info' ? true : false;
+    return asPromise({code: 0}, noop);
+  });
 }

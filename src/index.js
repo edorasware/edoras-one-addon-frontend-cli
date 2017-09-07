@@ -38,11 +38,11 @@ showStartScreen();
 
 inquirer.prompt([questionAddonName]).then((answers) => {
   initialize(answers.name);
-  showMessage(`Creating widget...`);
   return asPromise({code: 0}, () => {});
 }).then(() => {
   return setLogLevel();
 }).then(() => {
+  showMessage(`Creating widget...`);
   return cleanup();
 }).then(() => {
   showMessage(`Cloning template repository...`);

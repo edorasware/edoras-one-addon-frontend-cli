@@ -17,15 +17,13 @@ export function showStartScreen() {
 }
 
 export function showMessage(message) {
-  const callback = value => {
+  return new Promise((resolve) => {
     const lines = typeof message === 'string' ? [message] : message;
 
     lines.forEach(line => console.log(line));
 
-    return value;
-  };
-
-  return Promise.resolve(callback());
+    resolve();
+  });
 }
 
 export function showErrorMessageAndQuit(errorMessage) {

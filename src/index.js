@@ -144,7 +144,7 @@ function executeInPath(command, path) {
  * initialize :: string -> undefined
  */
 function initialize(aName) {
-  showMessage(`Your widget name is ${aName}`);
+  showMessage(`Your widget name is ${aName}.`);
   widgetName = aName.replace(/-/g, ' ').toLowerCase();
   widgetNameFull =
     `${EDORAS_ONE_WIDGET_NAME_PREFIX}-${EDORAS_ONE_WIDGET_NAME}-${paramCase(widgetName)}`;

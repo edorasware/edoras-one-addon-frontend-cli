@@ -220,19 +220,19 @@ function renameFiles() {
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'),
     'widget.icon.png', `${widgetNameFull}.icon.png`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.component.js', `${widgetNameFull}.component.js`);
+    'widget.component.js', `${paramCase(widgetName)}.component.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.configuration.js', `${widgetNameFull}.configuration.js`);
+    'widget.configuration.js', `${paramCase(widgetName)}.configuration.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.controller.js', `${widgetNameFull}.controller.js`);
+    'widget.controller.js', `${paramCase(widgetName)}.controller.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.module.js', `${widgetNameFull}.module.js`);
+    'widget.module.js', `${paramCase(widgetName)}.module.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.service.js', `${widgetNameFull}.service.js`);
+    'widget.service.js', `${paramCase(widgetName)}.service.js`);
   renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.tpl.html', `${widgetNameFull}.tpl.html`);
+    'widget.tpl.html', `${paramCase(widgetName)}.tpl.html`);
   return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters'),
-    'widget.adapter.js', `${widgetNameFull}.adapter.js`);
+    'widget.adapter.js', `${paramCase(widgetName)}.adapter.js`);
 }
 
 /**
@@ -274,6 +274,8 @@ function replaceNames() {
     'widgetNameFullParamCase', widgetNameFull, filePatterns);
   replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
     'widgetNameFullPascalCase', pascalCase(widgetNameFull), filePatterns);
+  replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
+    'widgetNameParamCase', paramCase(widgetName), filePatterns);
   return replaceInPath(path.join(__dirname, '..', '..', '..', WIDGET_PATH),
     'widgetNameTitleCase', titleCase(widgetName), filePatterns);
 }

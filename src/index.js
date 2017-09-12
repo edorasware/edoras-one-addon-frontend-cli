@@ -119,7 +119,7 @@ function createBuild() {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
     exec(`npm install`,
       {silent: isExecutionSilent});
-    const result = exec(`yarn run dist`,
+    const result = exec(`npm run dist`,
       {silent: isExecutionSilent});
     return asPromise(result, resolve, reject);
   });

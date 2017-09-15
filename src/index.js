@@ -34,7 +34,7 @@ const questionLogLevel = {
 let isExecutionSilent;
 let widgetName;
 let widgetNameFull;
-let widgetNameOriginal;
+let widgetNameOriginal = getRootName().replace('-frontend', '');
 
 showStartScreen();
 
@@ -141,6 +141,22 @@ function executeInPath(command, path) {
 }
 
 /**
+ * Get the root name of the addon
+ * initialize :: undefined -> string
+ */
+function getRootName() {
+  let rootName;
+  let currentPathParts = path.dirname(__dirname).split(path.sep);
+
+  // go three levels up in path
+  for (let i = 0; i < 3; i++) {
+    rootName = currentPathParts.pop();
+  }
+
+  return rootName();
+}
+
+/**
  * Initialize cli by setting name variables
  * initialize :: string -> undefined
  */
@@ -180,20 +196,9 @@ function moveFiles() {
  */
 function predictWidgetName() {
   try {
-    let rootName;
-    let currentPathParts = path.dirname(__dirname).split(path.sep);
-
-    // go three levels up in path
-    for (let i = 0; i < 3; i++) {
-      rootName = currentPathParts.pop();
-    }
-
-    widgetNameOriginal = clone(rootName.replace('-frontend', ''));
-    console.log('widgetNameOriginal', widgetNameOriginal);
-
     // extract widget name
     const regExp = new RegExp('edoras-addon-(.*)-frontend');
-    const widgetName = rootName.match(regExp)[1];
+    const widgetName = getRootName().match(regExp)[1];
     if (widgetName) {
       return paramCase(widgetName);
     } else {

@@ -3,6 +3,7 @@
 import { camelCase, paramCase, pascalCase, titleCase } from 'change-case';
 import configuration from './configuration';
 import inquirer from 'inquirer';
+import { clone } from 'lodash';
 import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
 import replace from 'replace';
@@ -187,7 +188,7 @@ function predictWidgetName() {
       rootName = currentPathParts.pop();
     }
 
-    widgetNameOriginal = rootName.replace('-frontend', '');
+    widgetNameOriginal = clone(rootName.replace('-frontend', ''));
     console.log('widgetNameOriginal', widgetNameOriginal);
 
     // extract widget name

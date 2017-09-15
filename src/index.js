@@ -3,7 +3,6 @@
 import { camelCase, paramCase, pascalCase, titleCase } from 'change-case';
 import configuration from './configuration';
 import inquirer from 'inquirer';
-import { clone } from 'lodash';
 import { showErrorMessageAndQuit, showMessage, showStartScreen } from './messages';
 import path from 'path';
 import replace from 'replace';
@@ -119,9 +118,9 @@ function cloneRepo(repoUrl, repoPath) {
 function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
-    exec(`npm install`,
+    exec(`yarn install`,
       {silent: isExecutionSilent});
-    const result = exec(`npm run dist`,
+    const result = exec(`yarn run dist`,
       {silent: isExecutionSilent});
     return asPromise(result, resolve, reject);
   });
@@ -176,14 +175,9 @@ function moveFiles() {
     const source =
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
 
-    console.log('widgetNameOriginal', widgetNameOriginal);
-    console.log(path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal));
-
     const dest =
       path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
-
-    console.log('dest', dest);
 
     const result = mv('-f', source, dest);
     return asPromise(result, resolve, reject);

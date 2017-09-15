@@ -153,7 +153,7 @@ function getRootName() {
     rootName = currentPathParts.pop();
   }
 
-  return rootName();
+  return rootName;
 }
 
 /**

@@ -33,6 +33,7 @@ const questionLogLevel = {
 let isExecutionSilent;
 let widgetName;
 let widgetNameFull;
+let widgetNameOriginal;
 
 showStartScreen();
 
@@ -158,7 +159,7 @@ function moveFiles() {
     const source =
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
     const dest =
-      path.join(__dirname, '..', '..', '..', '..', widgetNameFull, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
+      path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
 
     const result = mv('-f', source, dest);
@@ -179,6 +180,8 @@ function predictWidgetName() {
     for (let i = 0; i < 3; i++) {
       rootName = currentPathParts.pop();
     }
+
+    widgetNameOriginal = rootName.replace('-frontend', '');
 
     // extract widget name
     const regExp = new RegExp('edoras-addon-(.*)-frontend');

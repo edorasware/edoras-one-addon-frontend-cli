@@ -167,7 +167,7 @@ function moveFiles() {
 }
 
 /**
- * Predict the widget name from the parent directory
+ * Predict the widget name in param case from the parent directory
  * predictWidgetName :: undefined -> string
  */
 function predictWidgetName() {
@@ -184,7 +184,7 @@ function predictWidgetName() {
     const regExp = new RegExp('edoras-addon-(.*)-frontend');
     const widgetName = rootName.match(regExp)[1];
     if (widgetName) {
-      return widgetName;
+      return paramCase(widgetName);
     } else {
       throw 'Invalid name';
     }

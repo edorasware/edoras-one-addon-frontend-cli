@@ -182,6 +182,7 @@ function predictWidgetName() {
     }
 
     widgetNameOriginal = rootName.replace('-frontend', '');
+    console.log('widgetNameOriginal', widgetNameOriginal);
 
     // extract widget name
     const regExp = new RegExp('edoras-addon-(.*)-frontend');

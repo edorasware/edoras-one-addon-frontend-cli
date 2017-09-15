@@ -158,9 +158,15 @@ function moveFiles() {
   return new Promise((resolve, reject) => {
     const source =
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
+
+    console.log('widgetNameOriginal', widgetNameOriginal);
+    console.log(path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal));
+
     const dest =
       path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
     mkdir('-p', dest);
+
+    console.log('dest', dest);
 
     const result = mv('-f', source, dest);
     return asPromise(result, resolve, reject);

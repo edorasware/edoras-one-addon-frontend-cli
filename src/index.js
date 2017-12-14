@@ -205,42 +205,33 @@ function predictWidgetName() {
 }
 
 /**
- * Rename file in path
- * renameFile :: (path, string, target) -> string
- */
-function renameFile(path, source, target) {
-  return new Promise((resolve) => {
-    const command = `mv ${source} ${target}`;
-    executeInPath(command, path);
-    resolve();
-  });
-}
-
-/**
  * Rename multiple files
- * renameFile :: undefined -> Promise
+ * renameFiles :: undefined -> Promise
  */
 function renameFiles() {
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette'),
-    'widget.form.palette.xml', `${widgetNameFull}.form.palette.xml`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n'),
-    'widget.translation.properties', `${widgetNameFull}.translation.properties`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon'),
-    'widget.icon.png', `${widgetNameFull}.icon.png`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.component.js', `${paramCase(widgetName)}.component.js`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.configuration.js', `${paramCase(widgetName)}.configuration.js`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.controller.js', `${paramCase(widgetName)}.controller.js`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.module.js', `${paramCase(widgetName)}.module.js`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.service.js', `${paramCase(widgetName)}.service.js`);
-  renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src'),
-    'widget.tpl.html', `${paramCase(widgetName)}.tpl.html`);
-  return renameFile(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters'),
-    'widget.adapter.js', `${paramCase(widgetName)}.adapter.js`);
+  return new Promise((resolve) => {
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'widget.form.palette.xml'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', `${widgetNameFull}.form.palette.xml`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n', 'widget.translation.properties'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n', `${widgetNameFull}.translation.properties`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon', 'widget.icon.png'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon', `${widgetNameFull}.icon.png`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.component.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.component.js`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.configuration.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.configuration.js`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.controller.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.controller.js`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.module.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.module.js`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.service.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.service.js`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.tpl.html'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.tpl.html`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters', 'widget.adapter.js'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'adapters', `${paramCase(widgetName)}.adapter.js`));
+    resolve();
+  });
 }
 
 /**

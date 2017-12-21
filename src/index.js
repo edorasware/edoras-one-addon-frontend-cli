@@ -8,7 +8,6 @@ import path from 'path';
 import replace from 'replace';
 import { cd, exec, mkdir, mv, rm } from 'shelljs';
 
-
 const EDORAS_ONE_WIDGET_NAME = 'addon';
 const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
 const WIDGET_PATH = 'widget';
@@ -176,7 +175,7 @@ function moveFiles() {
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette');
 
     const dest =
-      path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal, 'src', 'main', 'resources', 'com', 'edorasware', 'one', 'widgets');
+      path.join(__dirname, '..', '..', '..', '..', widgetNameOriginal, 'src', 'main', 'resources', 'com', 'edorasware', 'vis');
     mkdir('-p', dest);
 
     const result = mv('-f', source, dest);

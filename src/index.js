@@ -213,8 +213,8 @@ function renameFiles() {
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', `${widgetNameFull}.form.palette.xml`));
     mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n', 'widget.translation.properties'),
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'i18n', `${widgetNameFull}.translation.properties`));
-    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon', 'widget.icon.png'),
-      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'icon', `${widgetNameFull}.icon.png`));
+    mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'component-presentations', 'palette-icons', 'widget.icon.png'),
+      path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'palette', 'component-presentations', 'palette-icons', `${widgetNameFull}.icon.png`));
     mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.component.js'),
       path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', `${paramCase(widgetName)}.component.js`));
     mv(path.join(__dirname, '..', '..', '..', WIDGET_PATH, 'src', 'widget.configuration.js'),

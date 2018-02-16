@@ -8,7 +8,7 @@ import path from 'path';
 import replace from 'replace';
 import { cd, exec, mkdir, mv, rm } from 'shelljs';
 
-const EDORAS_ONE_WIDGET_NAME = 'addon';
+const EDORAS_ONE_WIDGET_NAME = 'widget';
 const EDORAS_ONE_WIDGET_NAME_PREFIX = 'edoras';
 const WIDGET_PATH = 'widget';
 

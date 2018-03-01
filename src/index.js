@@ -117,23 +117,9 @@ function cloneRepo(repoUrl, repoPath) {
 function createBuild() {
   return new Promise((resolve, reject) => {
     cd(path.join(__dirname, '..', '..', '..', WIDGET_PATH));
-    exec(`yarn install`,
-      {silent: isExecutionSilent});
-    const result = exec(`yarn run dist`,
-      {silent: isExecutionSilent});
-    return asPromise(result, resolve, reject);
-  });
-}
-
-/**
- * Execute a command in a specific path
- * executeInPath :: (string, path) -> Promise
- */
-function executeInPath(command, path) {
-  return new Promise((resolve, reject) => {
-    cd(path);
-    const result = exec(command, {silent: isExecutionSilent});
-
+    // silent: false to show errors from artifactory (e.g. ERR 404 Not Found)
+    exec(`yarn install`, {silent: false});
+    const result = exec(`yarn run dist`, {silent: isExecutionSilent});
     return asPromise(result, resolve, reject);
   });
 }
